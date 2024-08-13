@@ -2,11 +2,9 @@ package nl.smallproject.www.testspring04.controllers;
 
 import nl.smallproject.www.testspring04.models.Session;
 import nl.smallproject.www.testspring04.repositories.SessionRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/sessions")
@@ -24,5 +22,22 @@ public class SessionsController {
     @RequestMapping("{id}")
     public Session get(@PathVariable Long id) {
         return sessionRepository.getReferenceById(id);
+    }
+
+    @PostMapping("/addSession")
+    public Session create(@RequestBody final Session session) {
+        return sessionRepository.saveAndFlush(session);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id) {
+        sessionRepository.deleteById(id);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public Session update(Long id, Session session) {
+        Session existingSession = sessionRepository.getReferenceById(id);
+        BeanUtils.copyProperties(session, existingSession, "id");
+        return sessionRepository.saveAndFlush(existingSession);
     }
 }

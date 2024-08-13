@@ -4,8 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Data;
 
-@Entity
+@Data
+@Entity(name = "sessions")
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
